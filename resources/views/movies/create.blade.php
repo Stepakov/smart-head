@@ -1,19 +1,14 @@
-<h1>Create Movie</h1>
-<hr>
-<a href="{{ route( 'movies.index') }}">Back to Index</a>
-<hr>
-<form action="{{ route( 'movies.store' ) }}" method="POST" enctype="multipart/form-data">
-    @csrf
+<x-layouts.main title="Create Movie">
+    <a href="{{ route( 'movies.index') }}">Back to Index</a>
+    <hr>
+    <form action="{{ route( 'movies.store' ) }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-    <input type="text" name="title" value="{{ old('title') }}"> <br>
-    @if ($errors->has('title'))
-        <div>
-            {{ $errors->first('title') }}
-        </div>
-    @endif
-    <input type="file" name="image" > <br>
+        <x-input label="Movie Title" name="title" />
+        <x-input type="file" label="Image" name="image" />
 
-    <button>
-        Create
-    </button>
-</form>
+        <button>
+            Create Movie
+        </button>
+    </form>
+</x-layouts.main>

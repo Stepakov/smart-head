@@ -32,7 +32,7 @@ class MoviesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $fields = $request->validated();
+//        $fields = $request->validated();
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('uploads', 'public');

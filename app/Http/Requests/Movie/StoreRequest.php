@@ -27,11 +27,21 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function messages()
+//    public function messages()
+//    {
+//        return [
+//            'title.required' => 'Нужно заполнить поле с :title.',
+//            'title.min' => 'Заголовок должен содержать не менее 3 символов.',
+//        ];
+//    }
+//
+    public function attributes()
     {
         return [
-            'title.required' => 'Нужно заполнить поле с заголовком.',
-            'title.min' => 'Заголовок должен содержать не менее 3 символов.',
+            'title' => 'Заголовок',
+            'image' => 'Картинка'
         ];
     }
+
+
 }
