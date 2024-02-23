@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Movie;
 
+use App\Models\Movie;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -22,7 +24,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255|min:3',
+            'title' => [ 'required', 'string', 'max:255', 'min:3', $this->titleUniqueRule() ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
@@ -41,6 +43,11 @@ class StoreRequest extends FormRequest
             'title' => 'Заголовок',
             'image' => 'Картинка'
         ];
+    }
+
+    protected function titleUniqueRule()
+    {
+        return Rule::unique( Movie::class, 'title' );
     }
 
 

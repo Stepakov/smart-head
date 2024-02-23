@@ -5,11 +5,19 @@
     'defaultValue' => ''
     ])
 
-<div>
-    {{ $label }} :
-    <input type="{{ $type }}" name="{{ $name }}" value="{{ old( $name, $defaultValue ) }}" > <br>
+<div class="mb-3 mt-3">
+
+    <inpu type="file">
+
+    <label for="formFile" class="form-label">{{ $label }} :</label>
+    <input class="form-control"
+           id="formFile"
+           type="{{ $type }}"
+           name="{{ $name }}"
+           value="{{ old( $name, $defaultValue ) }}" >
+    <br>
     @error( $name )
-        <div style="color:red">
+        <div class="alert alert-danger">
             {{ $message }}
         </div>
     @enderror
