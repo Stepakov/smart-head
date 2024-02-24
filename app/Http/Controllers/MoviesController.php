@@ -18,7 +18,8 @@ class MoviesController extends Controller
     public function index()
     {
 
-        $movies = Movie::with( 'genres' )
+        $movies = Movie::active()
+            ->with( 'genres' )
 //            ->where( 'status', Status::PUBLISHED )
             ->orderByDesc( 'created_at' )
             ->get();

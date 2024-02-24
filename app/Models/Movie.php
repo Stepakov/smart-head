@@ -29,5 +29,8 @@ class Movie extends Model
         return Movie::where( 'title', $this->title )->exists();
     }
 
-
+    public function scopeActive( $query )
+    {
+        return $query->where( 'status', Status::PUBLISHED );
+    }
 }
