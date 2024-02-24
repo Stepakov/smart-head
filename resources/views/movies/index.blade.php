@@ -8,7 +8,11 @@
             <a href="{{ route( 'movies.show', $movie->id ) }}">
                 <h2>{{ $movie->title }}</h2>
             </a>
-            <img src="{{ asset('storage/' . $movie->image) }}" alt="{{ $movie->title }}" width="400" height="200">
+            @if( preg_match("/^http/", $movie->image ) )
+                <img src="{{ asset( $movie->image) }}" alt="{{ $movie->title }}" width="400" height="200">
+            @else
+                <img src="{{ asset('storage/' . $movie->image) }}" alt="{{ $movie->title }}" width="400" height="200">
+            @endif
             <div>
                 Жанры:
 {{--                {{ $movie->genres->implode( 'title', ', ') }}--}}

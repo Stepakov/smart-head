@@ -19,7 +19,7 @@ class MovieFactory extends Factory
     {
         return [
             'title' => $this->faker->words( 3, true ),
-            'genres' => Genre::all()->random( 2 )
+            'image' => rand( 0, 1 ) ? $this->faker->imageUrl() : 'default.png'
         ];
     }
 }
