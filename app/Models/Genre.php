@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Movie extends Model
+class Genre extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = [ 'title', 'status', 'image' ];
+    protected $fillable = [ 'title' ];
 
-    public function genres()
+    public function movies()
     {
-        return $this->belongsToMany( Genre::class );
+        return $this->belongsToMany( Movie::class );
     }
 }
