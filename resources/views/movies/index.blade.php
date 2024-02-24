@@ -9,6 +9,13 @@
                 <h2>{{ $movie->title }}</h2>
             </a>
             <img src="{{ asset('storage/' . $movie->image) }}" alt="{{ $movie->title }}" width="400" height="200">
+            <div>
+                Жанры:
+{{--                {{ $movie->genres->implode( 'title', ', ') }}--}}
+                {!!  $movie->genres->map(function($genre) {
+                    return '<a href="' . route('genres.show', $genre->id) . '">' . $genre->title . '</a>';
+                })->implode(', ')  !!}
+            </div>
         </div>
         <div>
             <a class="btn btn-primary my-3" href="{{ route( 'movies.edit', $movie->id ) }}">
@@ -16,14 +23,6 @@
             </a>
         </div>
         <div>
-{{--            <form action="{{ route( 'movies.destroy', $movie->id ) }}" method="POST">--}}
-{{--                @csrf--}}
-{{--                @method("DELETE")--}}
-
-{{--                <button>--}}
-{{--                    DELETE--}}
-{{--                </button>--}}
-{{--            </form>--}}
             <x-form method="DELETE" :action="route( 'movies.destroy', $movie->id )">
                 <button class="btn btn-danger">
                     Delete

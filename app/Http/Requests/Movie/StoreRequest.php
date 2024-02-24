@@ -26,22 +26,15 @@ class StoreRequest extends FormRequest
         return [
             'title' => [ 'required', 'string', 'max:255', 'min:3', $this->titleUniqueRule() ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'genres' => 'required|array',
         ];
     }
-
-//    public function messages()
-//    {
-//        return [
-//            'title.required' => 'Нужно заполнить поле с :title.',
-//            'title.min' => 'Заголовок должен содержать не менее 3 символов.',
-//        ];
-//    }
-//
     public function attributes()
     {
         return [
             'title' => 'Заголовок',
-            'image' => 'Картинка'
+            'image' => 'Картинка',
+            'genres' => 'Жанр'
         ];
     }
 

@@ -20,6 +20,7 @@
                 </button>
             </x-form>
         </div>
+
         <hr>
     @empty
         <p>No genres found.</p>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Movie\StoreRequest;
 use App\Http\Requests\Movie\UpdateRequest;
+use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +16,8 @@ class MoviesController extends Controller
     public function index()
     {
 //        dd( trans( 'notifications.movies.created' ) );
-        $movies = Movie::all();
+//        $movies = Movie::all();
+        $movies = Movie::with( 'genres' )->get();
 
         return view( 'movies.index', compact( 'movies' ) );
     }
@@ -25,7 +27,8 @@ class MoviesController extends Controller
      */
     public function create()
     {
-        return view( 'movies.create' );
+        $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
+        return view( 'movies.create', compact( 'genres' ) );
     }
 
     /**
@@ -33,7 +36,8 @@ class MoviesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-//        $fields = $request->validated();
+        $fields = $request->validated();
+//        dd( $fields );
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('uploads', 'public');
@@ -41,10 +45,12 @@ class MoviesController extends Controller
             $imagePath = 'uploads/default.png';
         }
 
-        Movie::create([
+        $movie = Movie::create([
             'title' => $request->title,
             'image' => $imagePath,
         ]);
+
+        $movie->genres()->attach( $fields[ 'genres' ] );
 
         return redirect()
             ->route('movies.index')
@@ -64,7 +70,8 @@ class MoviesController extends Controller
      */
     public function edit(Movie $movie)
     {
-        return view( 'movies.edit', compact( 'movie' ) );
+        $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
+        return view( 'movies.edit', compact( 'movie', 'genres' ) );
     }
 
     /**
@@ -85,6 +92,8 @@ class MoviesController extends Controller
         }
 
         $movie->save();
+
+        $movie->genres()->sync( $fields[ 'genres' ] );
 
         return redirect()
             ->route('movies.index')
