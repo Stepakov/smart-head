@@ -28,4 +28,6 @@ class Movie extends Model
 //        return true;
         return Movie::where( 'title', $this->title )->exists();
     }
+
+
 }

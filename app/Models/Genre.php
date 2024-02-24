@@ -17,4 +17,9 @@ class Genre extends Model
     {
         return $this->belongsToMany( Movie::class )->withTimestamps();
     }
+
+    public function getAllGenresAttribute()
+    {
+        return $this->orderBy('title')->pluck('title', 'id');
+    }
 }
