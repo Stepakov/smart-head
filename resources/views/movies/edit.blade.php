@@ -16,11 +16,14 @@
              height="200">
         <br>
 
+        @bind( $movie )
         <x-form-select label="Жанры"
                        name="genres[]"
                        :options="$genres"
                        placeholder="Выберите жанр"
-                       multiple />
+                       multiple
+                       many-relation />
+        @endbind
 
         <button class="btn btn-success mt-3 mb-3">Edit Movie</button>
     </x-form>

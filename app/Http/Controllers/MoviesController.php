@@ -6,6 +6,7 @@ use App\Http\Requests\Movie\StoreRequest;
 use App\Http\Requests\Movie\UpdateRequest;
 use App\Models\Genre;
 use App\Models\Movie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class MoviesController extends Controller
@@ -15,9 +16,7 @@ class MoviesController extends Controller
      */
     public function index()
     {
-//        dd( trans( 'notifications.movies.created' ) );
-//        $movies = Movie::all();
-        $movies = Movie::with( 'genres' )->get();
+        $movies = Movie::with( 'genres' )->orderByDesc( 'created_at' )->get();
 
         return view( 'movies.index', compact( 'movies' ) );
     }
@@ -37,20 +36,21 @@ class MoviesController extends Controller
     public function store(StoreRequest $request)
     {
         $fields = $request->validated();
-//        dd( $fields );
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('uploads', 'public');
-        } else {
-            $imagePath = 'uploads/default.png';
-        }
+        DB::transaction( function() use ( $request, $fields ) {
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('uploads', 'public');
+            } else {
+                $imagePath = 'uploads/default.png';
+            }
 
-        $movie = Movie::create([
-            'title' => $request->title,
-            'image' => $imagePath,
-        ]);
+            $movie = Movie::create([
+                'title' => $request->title,
+                'image' => $imagePath,
+            ]);
 
-        $movie->genres()->attach( $fields[ 'genres' ] );
+            $movie->genres()->attach( $fields[ 'genres' ] );
+        });
 
         return redirect()
             ->route('movies.index')
@@ -82,18 +82,20 @@ class MoviesController extends Controller
         $fields = $request->validated();
         $movie->title = $fields[ 'title' ];
 
-        if ($request->hasFile('image')) {
-            if ($movie->image && $movie->image !== 'uploads/default.png' ) {
-                Storage::disk('public')->delete($movie->image);
+        DB::transaction( function() use ( $request, $movie, $fields ) {
+            if ($request->hasFile('image')) {
+                if ($movie->image && $movie->image !== 'uploads/default.png' ) {
+                    Storage::disk('public')->delete($movie->image);
+                }
+
+                $imagePath = $request->file('image')->store('uploads', 'public');
+                $movie->image = $imagePath;
             }
 
-            $imagePath = $request->file('image')->store('uploads', 'public');
-            $movie->image = $imagePath;
-        }
+            $movie->save();
 
-        $movie->save();
-
-        $movie->genres()->sync( $fields[ 'genres' ] );
+            $movie->genres()->sync( $fields[ 'genres' ] );
+        });
 
         return redirect()
             ->route('movies.index')

@@ -16,6 +16,12 @@
                        placeholder="Выберите жанр"
                        multiple />
 
+        @error( 'genres.*' )
+        <div class="text text-danger">
+            {{ $message }}
+        </div>
+        @enderror
+
         <button class="btn btn-success mt-3 mb-3">Create Movie</button>
     </x-form>
 </x-layouts.main>

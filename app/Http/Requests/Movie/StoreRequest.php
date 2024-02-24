@@ -27,6 +27,7 @@ class StoreRequest extends FormRequest
             'title' => [ 'required', 'string', 'max:255', 'min:3', $this->titleUniqueRule() ],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'genres' => 'required|array',
+            'genres.*' => 'required|integer|exists:genres,id',
         ];
     }
     public function attributes()
@@ -34,7 +35,8 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'Заголовок',
             'image' => 'Картинка',
-            'genres' => 'Жанр'
+            'genres' => 'Жанр',
+            'genres.*' => 'Жанр',
         ];
     }
 
