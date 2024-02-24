@@ -32,7 +32,8 @@ class MoviesController extends Controller
     public function create()
     {
 //        $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
-        $genres = Genre::first()->allGenres;
+//        $genres = Genre::first()->allGenres;
+        $genres = Genre::allGenres();
         return view( 'movies.create', compact( 'genres' ) );
     }
 

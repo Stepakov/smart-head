@@ -22,4 +22,9 @@ class Genre extends Model
     {
         return $this->orderBy('title')->pluck('title', 'id');
     }
+
+    public function scopeAllGenres( $query )
+    {
+        return $this->orderBy('title')->pluck('title', 'id');
+    }
 }
