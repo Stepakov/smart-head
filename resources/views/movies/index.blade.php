@@ -20,6 +20,9 @@
                     return '<a href="' . route('genres.show', $genre->id) . '">' . $genre->title . '</a>';
                 })->implode(', ')  !!}
             </div>
+            <div>
+                Status: {{ $movie->status->text() }}
+            </div>
         </div>
         <div>
             <a class="btn btn-primary my-3" href="{{ route( 'movies.edit', $movie->id ) }}">

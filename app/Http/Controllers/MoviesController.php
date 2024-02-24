@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Movies\Status;
 use App\Http\Requests\Movie\StoreRequest;
 use App\Http\Requests\Movie\UpdateRequest;
 use App\Models\Genre;
@@ -16,7 +17,11 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $movies = Movie::with( 'genres' )->orderByDesc( 'created_at' )->get();
+
+        $movies = Movie::with( 'genres' )
+//            ->where( 'status', Status::PUBLISHED )
+            ->orderByDesc( 'created_at' )
+            ->get();
 
         return view( 'movies.index', compact( 'movies' ) );
     }
@@ -62,6 +67,7 @@ class MoviesController extends Controller
      */
     public function show(Movie $movie)
     {
+//        dd( $movie->isSameTitle );
         return view( 'movies.show', compact( 'movie' ) );
     }
 
@@ -122,7 +128,7 @@ class MoviesController extends Controller
 
     public function restore( Movie $movie)
     {
-        if( Movie::where( 'title', $movie->title )->exists() )
+        if( $movie->isSameTitle )
         {
             return redirect()
                 ->back()
