@@ -14,7 +14,7 @@
     @vite([ 'resources/css/app.scss' ] )
 </head>
 <body>
-
+<x-notification />
 <header>
     <div class="container border-bottom pb-2">
         Header

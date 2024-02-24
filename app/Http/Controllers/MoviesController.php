@@ -14,6 +14,7 @@ class MoviesController extends Controller
      */
     public function index()
     {
+//        dd( trans( 'notifications.movies.created' ) );
         $movies = Movie::all();
 
         return view( 'movies.index', compact( 'movies' ) );
@@ -45,7 +46,9 @@ class MoviesController extends Controller
             'image' => $imagePath,
         ]);
 
-        return redirect()->route('movies.index');
+        return redirect()
+            ->route('movies.index')
+            ->with( 'notification', trans( 'notifications.movies.created' ) );
     }
 
     /**
@@ -83,7 +86,9 @@ class MoviesController extends Controller
 
         $movie->save();
 
-        return redirect()->route('movies.index');
+        return redirect()
+            ->route('movies.index')
+            ->with( 'notification', trans( 'notifications.movies.edited' ) );
     }
 
     /**
@@ -93,6 +98,8 @@ class MoviesController extends Controller
     {
         $movie->delete();
 
-        return redirect()->route('movies.index');
+        return redirect()
+            ->route('movies.index')
+            ->with( 'notification', trans( 'notifications.movies.deleted' ) );
     }
 }
