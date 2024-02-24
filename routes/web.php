@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MoviesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,4 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource( 'movies', \App\Http\Controllers\MoviesController::class );
+Route::get( 'movies/trashed', [ MoviesController::class, 'trashed' ] )
+    ->name( 'movies.trashed' );
+Route::put( 'movies/{movie}/restore', [ MoviesController::class, 'restore' ] )
+    ->name( 'movies.restore' )->withTrashed();
+Route::delete( 'movies/{movie}/forcedelete', [ MoviesController::class, 'forcedelete' ] )
+    ->name( 'movies.forcedelete' )->withTrashed();
+Route::resource( 'movies', MoviesController::class );

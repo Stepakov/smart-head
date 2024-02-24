@@ -102,4 +102,28 @@ class MoviesController extends Controller
             ->route('movies.index')
             ->with( 'notification', trans( 'notifications.movies.deleted' ) );
     }
+
+    public function trashed()
+    {
+        $movies = Movie::onlyTrashed()->orderByDesc( 'created_at' )->get();
+        return view( 'movies.trashed', compact( 'movies') );
+    }
+
+    public function restore( Movie $movie)
+    {
+        $movie->restore();
+
+        return redirect()
+            ->route('movies.index')
+            ->with( 'notification', trans( 'notifications.movies.restored' ) );
+    }
+
+    public function forcedelete( Movie $movie)
+    {
+        $movie->forceDelete();
+
+        return redirect()
+            ->route('movies.index')
+            ->with( 'notification', trans( 'notifications.movies.forcedelete' ) );
+    }
 }
