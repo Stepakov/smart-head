@@ -111,6 +111,13 @@ class MoviesController extends Controller
 
     public function restore( Movie $movie)
     {
+        if( Movie::where( 'title', $movie->title )->exists() )
+        {
+            return redirect()
+                ->back()
+                ->with( 'notification', trans( 'notifications.movies.restore-fail-with-same-title', [ 'title' => $movie->title ] ) );
+        }
+
         $movie->restore();
 
         return redirect()

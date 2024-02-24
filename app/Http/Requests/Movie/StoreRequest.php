@@ -47,7 +47,7 @@ class StoreRequest extends FormRequest
 
     protected function titleUniqueRule()
     {
-        return Rule::unique( Movie::class, 'title' );
+        return Rule::unique( Movie::class, 'title' )->whereNull( 'deleted_at' );
     }
 
 
