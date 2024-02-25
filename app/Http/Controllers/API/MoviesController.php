@@ -14,11 +14,14 @@ class MoviesController extends Controller
      */
     public function index()
     {
+        $page = 1;
+        $perPage = 3;
+
         $movies = Movie::
             with( 'genres' )
             ->active()
             ->orderByDesc( 'created_at' )
-            ->get();
+            ->paginate( $perPage, [ '*' ], 'page', $page );
 
         return MoviesResource::collection( $movies )->resolve();
     }

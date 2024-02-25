@@ -24,7 +24,12 @@ class GenresController extends Controller
      */
     public function show(Genre $genre)
     {
-        $movies = $genre->movies()->get();
+        $page = 1;
+        $perPage = 3;
+
+        $movies = $genre
+            ->movies()
+            ->paginate( $perPage, [ '*' ], 'page', $page );
 
         return MoviesResource::collection( $movies )->resolve();
     }
