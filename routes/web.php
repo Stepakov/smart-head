@@ -22,43 +22,53 @@ Route::get('/', function () {
 });
 
 Route::prefix( 'admin' )->group( function(){
-    Route::post( 'movies/{movie}/status/{status}', [ MoviesController::class, 'status' ])
-        ->name( 'movies.status' );
-    Route::get( 'movies/trashed', [ MoviesController::class, 'trashed' ] )
-        ->name( 'movies.trashed' );
-    Route::put( 'movies/{movie}/restore', [ MoviesController::class, 'restore' ] )
-        ->name( 'movies.restore' )->withTrashed();
-    Route::delete( 'movies/{movie}/forcedelete', [ MoviesController::class, 'forcedelete' ] )
-        ->name( 'movies.forcedelete' )->withTrashed();
+    Route::group([
+        'prefix' => 'movies',
+        'controller' => MoviesController::class
+    ], function () {
+        Route::post( '/{movie}/status/{status}', 'status' )
+            ->name( 'movies.status' );
+        Route::get( '/trashed', 'trashed' )
+            ->name( 'movies.trashed' );
+        Route::put( '/{movie}/restore', 'restore' )
+            ->name( 'movies.restore' )->withTrashed();
+        Route::delete( '/{movie}/forcedelete', 'forcedelete' )
+            ->name( 'movies.forcedelete' )->withTrashed();
+    });
+
     Route::resource( 'movies', MoviesController::class );
 
-    Route::get( 'genres/trashed', [ GenresController::class, 'trashed' ] )
-        ->name( 'genres.trashed' );
-    Route::put( 'genres/{genre}/restore', [ GenresController::class, 'restore' ] )
-        ->name( 'genres.restore' )->withTrashed();
-    Route::delete( 'genres/{genre}/forcedelete', [ GenresController::class, 'forcedelete' ] )
-        ->name( 'genres.forcedelete' )->withTrashed();
+    Route::prefix( 'admin' )->group( function() {
+        Route::group([
+            'prefix' => 'genres',
+            'controller' => GenresController::class
+        ], function () {
+            Route::get('/trashed', 'trashed')
+                ->name('genres.trashed');
+            Route::put('/{genre}/restore', 'restore')
+                ->name('genres.restore')->withTrashed();
+            Route::delete('/{genre}/forcedelete', 'forcedelete')
+                ->name('genres.forcedelete')->withTrashed();
+        });
+    });
+
     Route::resource( 'genres', GenresController::class );
 });
 
 Route::name( 'public.' )->group( function(){
-    Route::prefix( 'movies' )->group( function(){
-        Route::get( '/', [ MoviesControllerAlias::class, 'index' ] )->name( 'movies.index');
-        Route::get( '/{movie}/show', [ MoviesControllerAlias::class, 'show' ] )->name( 'movies.show' );
+    Route::group( [
+        'prefix' => 'movies',
+        'controller' => MoviesControllerAlias::class
+    ], function(){
+        Route::get( '/', 'index' )->name( 'movies.index');
+        Route::get( '/{movie}/show', 'show' )->name( 'movies.show' );
     });
-    Route::prefix( 'genres' )->group( function() {
-        Route::get( '/', [ GenresControllerAlias::class, 'index' ] )->name( 'genres.index');
-        Route::get( '/{genre}/show', [ GenresControllerAlias::class, 'show' ] )->name( 'genres.show' );
+    Route::group( [
+        'prefix' => 'genres',
+        'controller' => GenresControllerAlias::class
+    ], function() {
+        Route::get( '/', 'index' )->name( 'genres.index');
+        Route::get( '/{genre}/show', 'show' )->name( 'genres.show' );
     });
 });
-
-//Route::name( 'public.' )->prefix( 'movies' )->group( function(){
-//    Route::get( '/', [ MoviesControllerAlias::class, 'index' ] )->name( 'movies.index');
-//    Route::get( '/{movie}/show', [ MoviesControllerAlias::class, 'show' ] )->name( 'movies.show' );
-//});
-//
-//Route::name( 'public.' )->prefix( 'genres' )->group( function(){
-//    Route::get( '/', [ GenresControllerAlias::class, 'index' ] )->name( 'genres.index');
-//    Route::get( '/{genre}/show', [ GenresControllerAlias::class, 'show' ] )->name( 'genres.show' );
-//});
 
