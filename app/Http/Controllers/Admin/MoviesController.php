@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\Movies\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\StoreRequest;
 use App\Http\Requests\Movie\UpdateRequest;
@@ -153,5 +154,13 @@ class MoviesController extends Controller
         return redirect()
             ->route('movies.index')
             ->with( 'notification', trans( 'notifications.movies.forcedelete' ) );
+    }
+
+    public function status( Movie $movie, string $status )
+    {
+        $movie->status = Status::valueOf($status);
+        $movie->save();
+
+        return redirect()->back();
     }
 }

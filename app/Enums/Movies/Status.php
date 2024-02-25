@@ -18,4 +18,16 @@ enum Status : int
         };
 
     }
+
+    public static function valueOf( $status ) : int
+    {
+        $status = strtoupper( $status );
+
+        return match ($status) {
+            Status::DRAFT->name => Status::DRAFT->value,
+            Status::PUBLISHED->name => Status::PUBLISHED->value,
+            Status::BANNED->name => Status::BANNED->value,
+            default => throw new \Exception( 'some error with status' ),
+        };
+    }
 }

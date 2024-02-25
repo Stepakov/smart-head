@@ -22,6 +22,8 @@
             </div>
             <div>
                 Status: {{ $movie->status->text() }}
+                <x-status-buttons :movie="$movie" :status="$movie->status"/>
+
             </div>
         </div>
         <div>

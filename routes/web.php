@@ -22,6 +22,8 @@ Route::get('/', function () {
 });
 
 Route::prefix( 'admin' )->group( function(){
+    Route::post( 'movies/{movie}/status/{status}', [ MoviesController::class, 'status' ])
+        ->name( 'movies.status' );
     Route::get( 'movies/trashed', [ MoviesController::class, 'trashed' ] )
         ->name( 'movies.trashed' );
     Route::put( 'movies/{movie}/restore', [ MoviesController::class, 'restore' ] )
