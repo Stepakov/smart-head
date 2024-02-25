@@ -5,7 +5,7 @@
             enctype="multipart/form-data"
             method="POST">
 
-        @include( 'genres.form' )
+        @include( 'admin.genres.form' )
 
         <button class="btn btn-success mt-3 mb-3">Create Genre</button>
     </x-form>

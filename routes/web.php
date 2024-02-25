@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\GenresController;
-use App\Http\Controllers\Admin\MoviesController;
+use App\Http\Controllers\Admin\Genre\GenresController;
+use App\Http\Controllers\Admin\Movie\MoviesController;
 use App\Http\Controllers\Public\GenresController as GenresControllerAlias;
 use App\Http\Controllers\Public\MoviesController as MoviesControllerAlias;
 use Illuminate\Support\Facades\Route;

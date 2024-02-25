@@ -6,7 +6,7 @@
             method="POST">
 
 
-        @include( 'movies.form' )
+        @include( 'admin.movies.form' )
 
         <x-input type="file" label="Image" name="image" />
 

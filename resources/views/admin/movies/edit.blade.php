@@ -7,7 +7,7 @@
             enctype="multipart/form-data"
             method="PUT">
         @bind( $movie )
-        @include( 'movies.form' )
+        @include( 'admin.movies.form' )
         @endbind
         <x-input type="file" label="Image" name="image" />
         <img src="{{ asset('storage/' . $movie->image) }}"

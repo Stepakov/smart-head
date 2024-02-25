@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Movie;
 
 use App\Enums\Movies\Status;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\StoreRequest;
 use App\Http\Requests\Movie\UpdateRequest;
 use App\Models\Genre;
 use App\Models\Movie;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
-class MoviesController extends Controller
+class MoviesController extends MovieBaseController
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +17,7 @@ class MoviesController extends Controller
     {
 
         $movies = Movie
-//            ::active()
             ::with( 'genres' )
-//            ->where( 'status', Status::PUBLISHED )
             ->orderByDesc( 'created_at' )
             ->get();
 
@@ -34,8 +29,6 @@ class MoviesController extends Controller
      */
     public function create()
     {
-//        $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
-//        $genres = Genre::first()->allGenres;
         $genres = Genre::allGenres();
         return view( 'admin.movies.create', compact( 'genres' ) );
     }
@@ -45,22 +38,7 @@ class MoviesController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $fields = $request->validated();
-
-        DB::transaction( function() use ( $request, $fields ) {
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('uploads', 'public');
-            } else {
-                $imagePath = 'uploads/default.png';
-            }
-
-            $movie = Movie::create([
-                'title' => $request->title,
-                'image' => $imagePath,
-            ]);
-
-            $movie->genres()->attach( $fields[ 'genres' ] );
-        });
+        $this->service->store( $request );
 
         return redirect()
             ->route('movies.index')
@@ -72,7 +50,6 @@ class MoviesController extends Controller
      */
     public function show(Movie $movie)
     {
-//        dd( $movie->isSameTitle );
         return view( 'admin.movies.show', compact( 'movie' ) );
     }
 
@@ -81,7 +58,7 @@ class MoviesController extends Controller
      */
     public function edit(Movie $movie)
     {
-        $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
+        $genres = Genre::allGenres();
         return view( 'admin.movies.edit', compact( 'movie', 'genres' ) );
     }
 
@@ -90,23 +67,7 @@ class MoviesController extends Controller
      */
     public function update(UpdateRequest $request, Movie $movie)
     {
-        $fields = $request->validated();
-        $movie->title = $fields[ 'title' ];
-
-        DB::transaction( function() use ( $request, $movie, $fields ) {
-            if ($request->hasFile('image')) {
-                if ($movie->image && $movie->image !== 'uploads/default.png' ) {
-                    Storage::disk('public')->delete($movie->image);
-                }
-
-                $imagePath = $request->file('image')->store('uploads', 'public');
-                $movie->image = $imagePath;
-            }
-
-            $movie->save();
-
-            $movie->genres()->sync( $fields[ 'genres' ] );
-        });
+        $this->service->update( $request, $movie );
 
         return redirect()
             ->route('movies.index')

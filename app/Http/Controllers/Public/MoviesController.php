@@ -10,7 +10,7 @@ class MoviesController extends Controller
 {
     public function index()
     {
-        $movies = Movie::active()->orderBy( 'created_at' )->get();
+        $movies = Movie::active()->orderByDesc( 'created_at' )->get();
         return view( 'public.movies.index', compact( 'movies' ) );
     }
 
