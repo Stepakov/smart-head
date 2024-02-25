@@ -13,7 +13,7 @@ class MovieSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Movie::factory(5)->create()->each(function ($movie) {
+        \App\Models\Movie::factory(100)->create()->each(function ($movie) {
             $genres = Genre::get()->random( rand( 1, 3 ) );
             $movie->genres()->attach($genres);
         });
