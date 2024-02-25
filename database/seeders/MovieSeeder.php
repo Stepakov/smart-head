@@ -14,8 +14,7 @@ class MovieSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Movie::factory(5)->create()->each(function ($movie) {
-            // Присваиваем случайные жанры фильму
-            $genres = Genre::inRandomOrder()->limit(rand(1, 3))->get();
+            $genres = Genre::get()->random( rand( 1, 3 ) );
             $movie->genres()->attach($genres);
         });
     }
