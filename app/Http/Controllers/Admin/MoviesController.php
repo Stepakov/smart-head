@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Enums\Movies\Status;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\StoreRequest;
 use App\Http\Requests\Movie\UpdateRequest;
 use App\Models\Genre;
@@ -18,13 +18,14 @@ class MoviesController extends Controller
     public function index()
     {
 
-        $movies = Movie::active()
-            ->with( 'genres' )
+        $movies = Movie
+//            ::active()
+            ::with( 'genres' )
 //            ->where( 'status', Status::PUBLISHED )
             ->orderByDesc( 'created_at' )
             ->get();
 
-        return view( 'movies.index', compact( 'movies' ) );
+        return view( 'admin.movies.index', compact( 'movies' ) );
     }
 
     /**
@@ -35,7 +36,7 @@ class MoviesController extends Controller
 //        $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
 //        $genres = Genre::first()->allGenres;
         $genres = Genre::allGenres();
-        return view( 'movies.create', compact( 'genres' ) );
+        return view( 'admin.movies.create', compact( 'genres' ) );
     }
 
     /**
@@ -71,7 +72,7 @@ class MoviesController extends Controller
     public function show(Movie $movie)
     {
 //        dd( $movie->isSameTitle );
-        return view( 'movies.show', compact( 'movie' ) );
+        return view( 'admin.movies.show', compact( 'movie' ) );
     }
 
     /**
@@ -80,7 +81,7 @@ class MoviesController extends Controller
     public function edit(Movie $movie)
     {
         $genres = Genre::orderBy( 'title' )->get()->pluck( 'title', 'id' );
-        return view( 'movies.edit', compact( 'movie', 'genres' ) );
+        return view( 'admin.movies.edit', compact( 'movie', 'genres' ) );
     }
 
     /**
@@ -126,7 +127,7 @@ class MoviesController extends Controller
     public function trashed()
     {
         $movies = Movie::onlyTrashed()->orderByDesc( 'created_at' )->get();
-        return view( 'movies.trashed', compact( 'movies') );
+        return view( 'admin.movies.trashed', compact( 'movies') );
     }
 
     public function restore( Movie $movie)

@@ -17,7 +17,7 @@
 <x-notification />
 <header>
     <div class="container border-bottom pb-2">
-        Header | Админка | Выйти
+        Header | Public | Войти
     </div>
 </header>
 
@@ -30,17 +30,17 @@
                 </h4>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a href="{{ route( 'public.movies.index') }}">
-                            Public
+                        <a href="{{ route( 'movies.index') }}">
+                            Админка
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="{{ route( 'movies.index') }}">
+                        <a href="{{ route( 'public.movies.index') }}">
                             Фильмы
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="{{ route( 'genres.index') }}">
+                        <a href="{{ route( 'public.genres.index') }}">
                             Жанры
                         </a>
                     </li>

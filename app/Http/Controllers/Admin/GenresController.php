@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Genre\StoreRequest;
 use App\Http\Requests\Genre\UpdateRequest;
 use App\Models\Genre;
-use Illuminate\Support\Facades\Storage;
 
 class GenresController extends Controller
 {
@@ -17,7 +17,7 @@ class GenresController extends Controller
 //        dd( trans( 'notifications.genres.created' ) );
         $genres = Genre::orderBy( 'title' )->get();
 
-        return view( 'genres.index', compact( 'genres' ) );
+        return view( 'admin.genres.index', compact( 'genres' ) );
     }
 
     /**
@@ -25,7 +25,7 @@ class GenresController extends Controller
      */
     public function create()
     {
-        return view( 'genres.create' );
+        return view( 'admin.genres.create' );
     }
 
     /**
@@ -46,7 +46,7 @@ class GenresController extends Controller
      */
     public function show(Genre $genre)
     {
-        return view( 'genres.show', compact( 'genre' ) );
+        return view( 'admin.genres.show', compact( 'genre' ) );
     }
 
     /**
@@ -54,7 +54,7 @@ class GenresController extends Controller
      */
     public function edit(Genre $genre)
     {
-        return view( 'genres.edit', compact( 'genre' ) );
+        return view( 'admin.genres.edit', compact( 'genre' ) );
     }
 
     /**
@@ -84,7 +84,7 @@ class GenresController extends Controller
     public function trashed()
     {
         $genres = Genre::onlyTrashed()->orderByDesc( 'created_at' )->get();
-        return view( 'genres.trashed', compact( 'genres') );
+        return view( 'admin.genres.trashed', compact( 'genres') );
     }
 
     public function restore( Genre $genre)
